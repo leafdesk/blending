@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* tailwind 사용 시 <input /> 태그 focus: border 무시되는 현상 방지. */
+/* focus 시 border size 만큼 움직이는 현상 방지를 위해 height 고정. */
+input {
+  outline: none;
+  @apply focus:border-2;
+  height: 42px;
+}
