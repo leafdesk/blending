@@ -4,8 +4,6 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { createChatCompletion } from '../actions/openai-action'
 import { createRequestData } from '@/utils/openai-util'
 
-// create request data w/ user message.
-
 /**
  * 요청 데이터 타입 정의.
  */
@@ -22,12 +20,25 @@ type RequestData =
   | undefined
 
 /**
+ * 응답 데이터 타입 정의.
+ */
+type ResponseData =
+  | {
+      choices: {
+        message: {
+          content: string
+        }
+      }[]
+    }
+  | undefined
+
+/**
  * OpenAI 테스트 페이지.
  */
 const OpenAIPage = () => {
   const [requestData, setRequestData] = useState<RequestData>(undefined)
   const [userInput, setUserInput] = useState('')
-  const [responseData, setResponseData] = useState(undefined)
+  const [responseData, setResponseData] = useState<ResponseData>(undefined)
 
   useEffect(() => {
     const _requestData = createRequestData(userInput)
