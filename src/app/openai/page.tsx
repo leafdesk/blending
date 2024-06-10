@@ -8,17 +8,17 @@ import { printLog } from '@/utils/log-util'
 /**
  * 요청 데이터 타입 정의.
  */
-// type RequestData =
-//   | {
-//       model: string
-//       messages: { role: string; content: string }[]
-//       temperature: number
-//       max_tokens: number
-//       top_p: number
-//       frequency_penalty: number
-//       presence_penalty: number
-//     }
-//   | undefined
+type RequestData =
+  | {
+      model: string
+      messages: { role: string; content: string }[]
+      temperature: number
+      max_tokens: number
+      top_p: number
+      frequency_penalty: number
+      presence_penalty: number
+    }
+  | undefined
 
 /**
  * 응답 데이터 타입 정의.
@@ -42,8 +42,19 @@ const OpenAIPage = () => {
   const [userInput, setUserInput] = useState('')
   const [responseData, setResponseData] = useState<ResponseData>(undefined)
   const [messages, setMessages] = useState<{ role: string; content: string }[]>(
-    []
+    [
+      {
+        role: 'system',
+        content:
+          '256 max_tokens 이내로, 응답이 중간에 끊기지 않도록 완성된 문장으로, 한국어로 답변.',
+      },
+    ]
   )
+
+  /**
+   * 요청이 진행된 후 응답받기 전 상태.
+   */
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   /**
    * 사용자 입력 제출 시, messages 배열에 추가.
@@ -53,18 +64,42 @@ const OpenAIPage = () => {
       printLog(TAG, 'handleChatCompletion. User input is empty, return.')
       return
     }
+    setIsLoading(true)
     const newMessage = { role: 'user', content: userInput }
     setMessages([...messages, newMessage])
-
-    const requestData = createRequestData(messages)
-    console.log(requestData)
-    return
-
-    const response = await createChatCompletion(requestData)
-    setResponseData(response)
-    console.log('🚀 ~ handleChatCompletion ~ response:', response)
   }
 
+  /**
+   * 만들어진 요청 데이터를 통해 응답 생성.
+   */
+  const generateChatResponse = async (requestData: RequestData) => {
+    const response = await createChatCompletion(requestData)
+    console.log('🚀 ~ handleChatCompletion ~ response:', response)
+
+    setMessages([...messages, response.choices[0].message])
+    setResponseData(response)
+    setIsLoading(false)
+  }
+
+  /**
+   * 요청으로 인한 messages 배열 증가 시 chat completion 생성.
+   */
+  useEffect(() => {
+    // 요청 시에만 generateChatResponse(createChatCompletion) 진행.
+    // 초기 렌더링 시와 응답 시에는 messages 배열에 변화가 생겨도 무시.
+    // 아래 방어코드가 없으면 [응답 -> 배열 증가 -> 재 요청] 무한 루프 발생.
+    if (!isLoading) {
+      printLog(TAG, `useEffect(messages). return. isLoading: ${isLoading}`)
+      return
+    }
+    const requestData = createRequestData(messages)
+    console.log('🚀 ~ useEffect ~ requestData:', requestData)
+    generateChatResponse(requestData)
+  }, [messages])
+
+  /**
+   * 사용자 입력 변화 시.
+   */
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUserInput(e.target.value)
   }
