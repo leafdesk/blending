@@ -9,20 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@vonage/server-sdk": "^3.14.0",
     "aws-sdk": "^2.1630.0",
     "axios": "^1.7.2",
     "next": "14.2.3",
     "openai": "^4.47.2",
     "react": "^18",
-    "react-dom": "^18",
-    "twilio": "^5.0.4"
+    "react-dom": "^18"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "@types/twilio": "^3.19.3",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
