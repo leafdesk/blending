@@ -22,8 +22,23 @@ const DynamoDBPage = () => {
    * 대화 세션 저장.
    */
   const saveChatSession = async () => {
+    // 테스트 데이터.
+    const sessionId = 'session-uuid'
+    const userPhoneNumber = '+821099990000'
+    const messages = JSON.stringify([{ role: 'user', content: '메시지 내용' }])
+    const startTime = '20240601130000'
+    const endTime = '20240601131000'
+    const sessionStatus = '변경 2'
+
     try {
-      const response = await axios.post('/api/chat')
+      const response = await axios.post('/api/chat', {
+        sessionId,
+        userPhoneNumber,
+        messages,
+        startTime,
+        endTime,
+        sessionStatus,
+      })
       console.log('🚀 ~ saveChatSession ~ response:', response)
     } catch (error) {
       console.log('🚀 ~ saveChatSession ~ error:', error)

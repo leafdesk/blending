@@ -110,12 +110,14 @@ export const getChatSession = async (
  * POST /api/chat 요청.
  */
 export async function POST(request: NextRequest) {
-  const sessionId = 'session-uuid'
-  const userPhoneNumber = '+821099990000'
-  const messages = JSON.stringify([{ role: 'user', content: '메시지 내용' }])
-  const startTime = '20240601130000'
-  const endTime = '20240601131000'
-  const sessionStatus = '세션 상태 변경!'
+  const {
+    sessionId,
+    userPhoneNumber,
+    messages,
+    startTime,
+    endTime,
+    sessionStatus,
+  } = await request.json()
 
   const existingSession = await getChatSession(sessionId)
   console.log('existingSession:', existingSession)
