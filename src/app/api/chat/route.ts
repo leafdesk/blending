@@ -96,7 +96,8 @@ export const getChatSession = async (
   try {
     const data = await docClient.send(new GetCommand(params))
     if (data.Item) {
-      return JSON.parse(data.Item.Messages)
+      // return JSON.parse(data.Item.Messages)
+      return data.Item
     } else {
       return null
     }
@@ -104,6 +105,23 @@ export const getChatSession = async (
     console.log('🚀 ~ getChatSession ~ error:', error)
     return null
   }
+}
+
+/**
+ * GET /api/chat 요청.
+ */
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url)
+  const sessionId = searchParams.get('sessionId')
+
+  if (!sessionId) {
+    return NextResponse.json(
+      { ok: false, message: 'sessionId is required' },
+      { status: 400 }
+    )
+  }
+  const session = await getChatSession(sessionId)
+  return NextResponse.json({ ok: true, session })
 }
 
 /**
