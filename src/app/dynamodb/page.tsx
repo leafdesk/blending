@@ -2,7 +2,7 @@
 
 import { printLog } from '@/utils/log-util'
 import axios from 'axios'
-import { getChatSession, upsertChatSession } from '../actions/chat-action'
+import { getChatSession, upsertChatSession } from '@/services/chat-service'
 
 const TAG = 'DynamoDBPage'
 

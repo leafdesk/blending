@@ -1,4 +1,4 @@
-'use server'
+'use server' // 없으면 Authorization 실패(401).
 
 import axios from 'axios'
 

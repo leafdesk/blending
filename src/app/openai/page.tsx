@@ -1,7 +1,7 @@
 'use client'
 
 import { ChangeEvent, useEffect, useState } from 'react'
-import { createChatCompletion } from '../actions/openai-action'
+import { createChatCompletion } from '@/app/actions/openai-action'
 import { createRequestData } from '@/utils/openai-util'
 import { printLog } from '@/utils/log-util'
 
@@ -73,6 +73,7 @@ const OpenAIPage = () => {
    * 만들어진 요청 데이터를 통해 응답 생성.
    */
   const generateChatResponse = async (requestData: RequestData) => {
+    console.log('🚀 ~ handleChatCompletion ~ requestData:', requestData)
     const response = await createChatCompletion(requestData)
     console.log('🚀 ~ handleChatCompletion ~ response:', response)
 

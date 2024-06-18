@@ -23,7 +23,7 @@ export const upsertChatSession = async () => {
   const messages = JSON.stringify([{ role: 'user', content: '메시지 내용' }])
   const startTime = '20240601130000'
   const endTime = '20240601131000'
-  const sessionStatus = '변경 3'
+  const sessionStatus = '변경 4'
 
   try {
     const response = await axios.post('/api/chat', {
