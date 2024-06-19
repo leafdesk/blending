@@ -21,6 +21,11 @@ const DynamoDBPage = () => {
 
   // 테스트 데이터.
   const sessionId = 'session-uuid'
+  const userPhoneNumber = '+821099990000'
+  const messages = '테스트 메시지'
+  const startTime = '20240601130000'
+  const endTime = '20240601131000'
+  const sessionStatus = '변경 5'
 
   return (
     <div className="px-5 py-16">
@@ -40,7 +45,16 @@ const DynamoDBPage = () => {
       <button
         type="button"
         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-        onClick={upsertChatSession}
+        onClick={() =>
+          upsertChatSession(
+            sessionId,
+            userPhoneNumber,
+            messages,
+            startTime,
+            endTime,
+            sessionStatus
+          )
+        }
       >
         UPSERT
       </button>

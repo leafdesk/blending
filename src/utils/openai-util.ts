@@ -2,7 +2,10 @@ import { printLog } from './log-util'
 
 const TAG = 'openai-util'
 
-type Messages = {
+/**
+ * GPT 메시지 배열 타입 정의.
+ */
+export type Messages = {
   role: string
   content: string
 }[]

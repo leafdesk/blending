@@ -1,30 +1,52 @@
 import axios from 'axios'
 
 /**
+ * ChatSession 타입 정의.
+ */
+type ChatSession = {
+  SessionId: string
+  UserPhoneNumber: string
+  Messages: string
+  StartTime: string
+  EndTime: string
+  SessionStatus: string
+}
+
+/**
+ * getChatSession 응답 타입 정의.
+ */
+type GetChatSessionResponse = {
+  data: {
+    session: ChatSession
+  }
+}
+
+/**
  * 대화 세션 조회. (세션 아이디로)
  */
-export const getChatSession = async (sessionId: string) => {
+export const getChatSession = async (
+  sessionId: string
+): Promise<GetChatSessionResponse> => {
   try {
     return await axios.get('/api/chat', {
       params: { sessionId },
     })
   } catch (error) {
-    console.log('🚀 ~ getChatSession ~ response:', error)
+    throw new Error('Failed to get chat session')
   }
 }
 
 /**
  * 대화 세션 업데이트 또는 신규 저장. (upsert: update + insert)
  */
-export const upsertChatSession = async () => {
-  // 테스트 데이터.
-  const sessionId = 'session-uuid'
-  const userPhoneNumber = '+821099990000'
-  const messages = JSON.stringify([{ role: 'user', content: '메시지 내용' }])
-  const startTime = '20240601130000'
-  const endTime = '20240601131000'
-  const sessionStatus = '변경 4'
-
+export const upsertChatSession = async (
+  sessionId: string,
+  userPhoneNumber: string,
+  messages: string,
+  startTime: string,
+  endTime: string,
+  sessionStatus: string
+) => {
   try {
     const response = await axios.post('/api/chat', {
       sessionId,
